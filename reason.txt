@@ -1,0 +1,420 @@
+  https://github.com/katia-openai/master-dev-workshop.git
+  
+
+const moves = [
+   
+    [-2, -1], 
+    [-2, 1], 
+    [-1, -2],
+    [-1, 2],
+    [ 1, -2],
+    [ 1, 2], 
+    [ 2, -1], 
+    [ 2, 1] 
+      
+    ];
+
+
+    1   2   3   4   5    6   7   8
+   ┌───┬───┬───┬───┬───┬───┬───┬───┐
+1  │   │   │   │   │   │   │   │   │
+   ├───┼───┼───┼───┼───┼───┼───┼───┤
+2  │   │   │   │   │   │   │   │   │
+   ├───┼───┼───┼───┼───┼───┼───┼───┤
+3  │   │   │   │   │   │   │   │   │
+   ├───┼───┼───┼───┼───┼───┼───┼───┤
+4  │   │   │   │   │   │   │   │   │
+   ├───┼───┼───┼───┼───┼───┼───┼───┤
+5  │   │   │   │   │   │   │   │   │
+   ├───┼───┼───┼───┼───┼───┼───┼───┤
+6  │   │   │   │   │   │   │   │   │
+   ├───┼───┼───┼───┼───┼───┼───┼───┤
+7  │   │   │   │   │   │   │   │   │
+   ├───┼───┼───┼───┼───┼───┼───┼───┤
+8  │   │   │   │   │   │   │   │   │
+   └───┴───┴───┴───┴───┴───┴───┴───┘
+
+        COLUMNS
+          ↓
+       1  2  3  4  5  6  7  8
+     ┌─────────────────────────
+ROW 1│
+     │
+ROW 2│
+     │
+ROW 3│
+     │
+ROW 4│
+     │
+ROW 5│
+     │
+ROW 6│
+     │
+ROW 7│
+     │
+ROW 8│
+
+
+We identify a square using:
+
+[row, column]
+
+So:
+
+[3, 3]
+
+means:
+
+Row 3, Column 3
+
+That's it.
+
+FIRST number = ROW
+SECOND number = COLUMN
+
+Therefore:
+
+[3, 3]
+ ↑  ↑
+ │  └── column 3
+ └───── row 3
+
+
+           COLUMN
+       1  2  3  4  5  6  7  8
+       ↓  ↓  ↓  ↓  ↓  ↓  ↓  ↓
+
+ROW 1  ·  ·  ·  ·  ·  ·  ·  ·
+ROW 2  ·  ·  ·  ·  ·  ·  ·  ·
+ROW 3  ·  ·  ♞  ·  ·  ·  ·  ·
+ROW 4  ·  ·  ·  ·  ·  ·  ·  ·
+ROW 5  ·  ·  ·  ·  ·  ·  ·  ·
+ROW 6  ·  ·  ·  ·  ·  ·  ·  ·
+ROW 7  ·  ·  ·  ·  ·  ·  ·  ·
+ROW 8  ·  ·  ·  ·  ·  ·  ·  ·
+
+          ♞ = [3,3]
+
+
+
+
+Now comes the REALLY important part: numbers like -2 and -1
+
+This is where things usually become confusing.
+
+When we write:
+
+[-2, -1]
+
+we are NOT describing a square.
+
+We're describing a change in position.
+
+This is the key distinction.
+
+Compare:
+
+[3, 3]
+
+with:
+
+[-2, -1]
+
+[3,3] says:
+
+Where am I?
+
+[-2,-1] says:
+
+How should I move?
+
+Think of it like this:
+
+CURRENT POSITION
+      ↓
+   [3, 3]
+
+MOVEMENT INSTRUCTION
+      ↓
+  [-2, -1]
+
+
+
+| Movement  | Row    | Column  | Meaning |
+| --------- | ------ | ------- | ------- |
+| `[-2,-1]` | up 2   | left 1  | ↖[1, 2] |
+| `[-2,+1]` | up 2   | right 1 | ↗[1, 4] |
+| `[-1,-2]` | up 1   | left 2  | ↖[2, 1] |
+| `[-1,+2]` | up 1   | right 2 | ↗[2, 5] |
+| `[+1,-2]` | down 1 | left 2  | ↙[4, 1] |
+| `[+1,+2]` | down 1 | right 2 | ↘[4, 5] |
+| `[+2,-1]` | down 2 | left 1  | ↙[5, 2] |
+| `[+2,+1]` | down 2 | right 1 | ↘[5, 4] |
+
+Moving UP means subtracting from the row.
+
+So:
+
+-1 = up 1 row
+-2 = up 2 rows
+
+
+Moving DOWN means adding to the row.
+
+So:
+
++1 = down 1 row
++2 = down 2 rows
+
+ROW MOVEMENT
+
+-2 → up 2
+-1 → up 1
++1 → down 1
++2 → down 2
+
+COLUMN MOVEMENT
+
+-2 → left 2
+-1 → left 1
++1 → right 1
++2 → right 2
+
+Notice something beautiful:
+
+There are really only two L-shapes:
+
+2 rows + 1 column
+
+and:
+
+1 row + 2 columns
+
+Then we flip those L-shapes around in all directions.
+
+That's how we get 8.
+
+Places where each move meets on the board 
+
+                 [1,2]   [1,4]
+
+
+          [2,1]             [2,5]
+
+
+                     ♞
+                   [3,3]
+
+
+          [4,1]             [4,5]
+
+
+                 [5,2]   [5,4]
+
+
+
+16. But wait — are all eight ALWAYS possible?
+
+No!
+
+This is one of the most important ideas for your Knights Travails project.
+
+The knight always has eight possible movement patterns.
+
+But from a particular square, some of those patterns may take the knight outside the board.
+
+That's what you meant when you said:
+
+some are valid while others aren't.
+
+Exactly.
+
+17. Let's see this with [3,3]
+
+Our knight starts here:
+
+[3,3]
+
+Remember:
+
+row = 3
+column = 3
+
+Let's test every movement.
+
+Move 1
+[-2,-1]
+
+Calculate:
+
+row:
+3 + (-2) = 1
+
+column:
+3 + (-1) = 2
+
+Result:
+
+[1,2]
+
+Valid? YES.
+
+Because:
+
+row 1 → on board
+column 2 → on board
+Move 2
+[-2,+1]
+
+Calculate:
+
+3 + (-2) = 1
+3 + (+1) = 4
+
+Result:
+
+[1,4]
+
+Valid.
+
+Move 3
+[-1,-2]
+
+Calculate:
+
+3 + (-1) = 2
+3 + (-2) = 1
+
+Result:
+
+[2,1]
+
+Valid.
+
+Move 4
+[-1,+2]
+
+Calculate:
+
+3 + (-1) = 2
+3 + (+2) = 5
+
+Result:
+
+[2,5]
+
+Valid.
+
+Move 5
+[+1,-2]
+
+Calculate:
+
+3 + 1 = 4
+3 - 2 = 1
+
+Result:
+
+[4,1]
+
+Valid.
+
+Move 6
+[+1,+2]
+
+Calculate:
+
+3 + 1 = 4
+3 + 2 = 5
+
+Result:
+
+[4,5]
+
+Valid.
+
+Move 7
+[+2,-1]
+
+Calculate:
+
+3 + 2 = 5
+3 - 1 = 2
+
+Result:
+
+[5,2]
+
+Valid.
+
+Move 8
+[+2,+1]
+
+Calculate:
+
+3 + 2 = 5
+3 + 1 = 4
+
+Result:
+
+[5,4]
+
+Valid.
+
+So from [3,3]:..all the moves are actually valid rows and columns
+on our board
+
+                 [1,2]   [1,4]
+
+
+          [2,1]             [2,5]
+
+
+                     ♞
+                   [3,3]
+
+
+          [4,1]             [4,5]
+
+
+                 [5,2]   [5,4]
+
+
+
+                 A graph has:
+
+VERTICES (nodes)
++
+EDGES (connections)
+
+On our chessboard:
+
+EVERY SQUARE = A NODE
+
+So:
+
+[3,3]
+
+is a node.
+
+When the knight can legally move from:
+
+[3,3]
+
+to:
+
+[1,2]
+
+we have a connection:
+
+[3,3] ───── [1,2]
+
+Likewise:
+
+[3,3] ───── [1,4]
+[3,3] ───── [2,1]
+[3,3] ───── [2,5]
+[3,3] ───── [4,1]
+[3,3] ───── [4,5]
+[3,3] ───── [5,2]
+[3,3] ───── [5,4]
