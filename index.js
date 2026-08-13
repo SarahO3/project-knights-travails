@@ -1,6 +1,6 @@
 
 function isValidMove(x, y) {
-    return x >= 0 && x < 8 && y >= 0 && y < 8;
+    return x >= 0 && x < 7 && y >= 0 && y < 7;
 }
 
 
